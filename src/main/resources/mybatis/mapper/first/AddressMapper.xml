@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyz.sparrow.mapper.first.AddressMapper">
+    <insert id="save" parameterType="com.zyz.sparrow.bean.Address">
+        INSERT INTO t_address(id,code,name,pid,type)
+        VALUES
+        (
+       #{id},#{code},#{name},#{pid},#{type}
+        )
+    </insert>
+    
+    <select id="get" parameterType="long" resultType="com.zyz.sparrow.bean.Address">
+    	select * from t_address where id = #{id}
+    </select>
+    <select id="find"  resultType="java.util.List">
+         SELECT * FROM t_address order by id LIMIT 1,1
+     </select>
+</mapper>
