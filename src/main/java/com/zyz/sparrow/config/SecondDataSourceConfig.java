@@ -3,6 +3,11 @@ package com.zyz.sparrow.config;
 import com.alibaba.druid.filter.Filter;
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
+import com.baomidou.mybatisplus.core.MybatisConfiguration;
+import com.baomidou.mybatisplus.core.MybatisXMLLanguageDriver;
+import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.google.common.collect.Lists;
 import io.shardingsphere.core.api.ShardingDataSourceFactory;
 import io.shardingsphere.core.api.algorithm.sharding.standard.PreciseShardingAlgorithm;
@@ -10,7 +15,9 @@ import io.shardingsphere.core.api.config.ShardingRuleConfiguration;
 import io.shardingsphere.core.api.config.TableRuleConfiguration;
 import io.shardingsphere.core.api.config.strategy.ShardingStrategyConfiguration;
 import io.shardingsphere.core.api.config.strategy.StandardShardingStrategyConfiguration;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.type.JdbcType;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
@@ -24,12 +31,13 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Configuration
-@MapperScan(basePackages = "com.sun.shard.mapper.second", sqlSessionTemplateRef = "secondSqlSessionTemplate")
+@MapperScan(basePackages = "com.zyz.sparrow.mapper.second", sqlSessionTemplateRef = "secondSqlSessionTemplate")
 public class SecondDataSourceConfig {
 
     @Autowired
@@ -59,10 +67,26 @@ public class SecondDataSourceConfig {
     // 创建SessionFactory
     @Bean(name = "secondSqlSessionFactory")
     public SqlSessionFactory secondSqlSessionFactory(@Qualifier("dataSource") DataSource dataSource) throws Exception {
-        SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
-        bean.setDataSource(dataSource);
-        bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mybatis/mapper/second/*.xml"));
-        return bean.getObject();
+        MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
+        sqlSessionFactory.setDataSource(dataSource);
+        sqlSessionFactory.setTypeAliasesPackage("");
+        sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mybatis/mapper/second/*.xml"));
+
+        MybatisConfiguration configuration = new MybatisConfiguration();
+        configuration.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
+        configuration.setJdbcTypeForNull(JdbcType.NULL);
+        sqlSessionFactory.setConfiguration(configuration);
+
+
+        List<Interceptor> interceptorList = Lists.newArrayList();
+        //分页插件
+        interceptorList.add(new PaginationInterceptor());
+        //乐观锁插件
+        interceptorList.add(new OptimisticLockerInterceptor());
+
+        Interceptor[] interceptorArray = new Interceptor[interceptorList.size()];
+        sqlSessionFactory.setPlugins(interceptorList.toArray(interceptorArray));
+        return sqlSessionFactory.getObject();
     }
 
 
