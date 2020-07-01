@@ -16,6 +16,7 @@ public class AddressServiceImpl implements IAddressService{
 	@Override
 	public void save(Address address) {
 		// TODO Auto-generated method stub
+		address.setId(1L);
 		addressMapper.save(address);
 	}
 

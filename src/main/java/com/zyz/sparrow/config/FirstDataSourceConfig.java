@@ -1,5 +1,7 @@
 package com.zyz.sparrow.config;
 
+import com.atomikos.icatch.jta.UserTransactionImp;
+import com.atomikos.icatch.jta.UserTransactionManager;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.MybatisXMLLanguageDriver;
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
@@ -20,8 +22,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.jta.JtaTransactionManager;
 
 import javax.sql.DataSource;
+import javax.transaction.UserTransaction;
 import java.util.List;
 
 @Configuration
@@ -73,11 +77,22 @@ public class FirstDataSourceConfig {
 
     // 创建事务管理器
 
-    @Bean("firstTransactionManger")
+    /*
+     * 使用这个来做总事务 后面的数据源就不用设置事务了
+     * */
+    @Bean(name = "transactionManager")
     @Primary
-    public DataSourceTransactionManager firstTransactionManger(@Qualifier("firstDS") DataSource dataSource){
-        return new DataSourceTransactionManager(dataSource);
+    public JtaTransactionManager regTransactionManager () {
+        UserTransactionManager userTransactionManager = new UserTransactionManager();
+        UserTransaction userTransaction = new UserTransactionImp();
+        return new JtaTransactionManager(userTransaction, userTransactionManager);
     }
+
+//    @Bean("firstTransactionManger")
+//    @Primary
+//    public DataSourceTransactionManager firstTransactionManger(@Qualifier("firstDS") DataSource dataSource){
+//        return new DataSourceTransactionManager(dataSource);
+//    }
 
     // 创建SqlSessionTemplate
 

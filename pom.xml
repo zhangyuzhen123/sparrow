@@ -80,6 +80,21 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>5.1.10.RELEASE</version>
 		</dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.atomikos</groupId>
+            <artifactId>transactions-jta</artifactId>
+            <version>4.0.6</version>
+        </dependency>
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>javax.transaction-api</artifactId>
+			<version>1.2</version>
+		</dependency>
 	</dependencies>
 	
 	 <!-- 引入spring boot的依赖 -->
@@ -96,13 +111,21 @@
   </dependencyManagement>
 
   <!-- 添加spring-boot的maven插件 -->
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><configuration><source>6</source><target>6</target></configuration></plugin>
-    </plugins>
-  </build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>8</source>
+					<target>8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	
 </project>

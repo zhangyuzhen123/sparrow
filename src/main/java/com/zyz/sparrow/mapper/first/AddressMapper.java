@@ -1,8 +1,9 @@
 package com.zyz.sparrow.mapper.first;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zyz.sparrow.bean.Address;
 
-public interface AddressMapper {
+public interface AddressMapper extends BaseMapper {
 	/**
 	 * 保存
 	 */
