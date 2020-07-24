@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zyz.sparrow.mapper.second.UserMapper">
-    <insert id="save" parameterType="com.zyz.sparrow.bean.User">
+<mapper namespace="UserMapper">
+    <insert id="save" parameterType="User">
         INSERT INTO t_user(name,phone,email,city_id,sex,password)
         VALUES
         (
@@ -10,7 +10,7 @@
         )
     </insert>
     
-    <select id="get" parameterType="long" resultType="com.zyz.sparrow.bean.User">
+    <select id="get" parameterType="long" resultType="User">
     	select * from t_user where id = #{id}
     </select>
     <select id="find"  resultType="java.util.List">

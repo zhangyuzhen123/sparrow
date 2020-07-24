@@ -4,15 +4,13 @@ import java.util.Date;
 import java.util.List;
 
 import com.zyz.sparrow.bean.Address;
-import com.zyz.sparrow.service.IAddressService;
+import com.zyz.sparrow.bean.User;
 import com.zyz.sparrow.service.IUserService;
-import org.apache.commons.lang3.StringUtils;
+import com.zyz.sparrow.service.IAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.zyz.sparrow.bean.User;
 import com.zyz.sparrow.mapper.second.UserMapper;
-import org.springframework.transaction.annotation.Transactional;
 
 
 @Service

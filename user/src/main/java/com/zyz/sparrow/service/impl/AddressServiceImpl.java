@@ -1,9 +1,9 @@
 package com.zyz.sparrow.service.impl;
 
+import com.zyz.sparrow.bean.Address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.zyz.sparrow.bean.Address;
 import com.zyz.sparrow.mapper.first.AddressMapper;
 import com.zyz.sparrow.service.IAddressService;
 

@@ -4,7 +4,7 @@
 
 	<parent>
 		<artifactId>sparrow</artifactId>
-		<groupId>com.zyz</groupId>
+		<groupId>com.zyz.sparrow</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
